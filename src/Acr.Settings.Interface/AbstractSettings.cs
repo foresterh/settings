@@ -52,14 +52,9 @@ namespace Acr.Settings {
                     ? SettingChangeAction.Update
                     : SettingChangeAction.Add;
 
-                if (EqualityComparer<T>.Default.Equals(value, default(T)))
-                    this.Remove(key);
-
-                else {
-                    var type = this.UnwrapType(typeof(T));
-                    this.NativeSet(type, key, value);
-                    this.OnChanged(new SettingChangeEventArgs(action, key, value));
-                }
+                var type = UnwrapType(typeof(T));
+                NativeSet(type, key, value);
+                OnChanged(new SettingChangeEventArgs(action, key, value));
             }
             catch (Exception ex) {
                 throw new ArgumentException($"Error setting key {key} with value {value}", ex);
